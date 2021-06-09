@@ -1,17 +1,29 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
 import Button from '../../Button';
 
 export default function AddComment({ postId }) {
   const [name, setName] = useState('');
   const [content, setContent] = useState('');
+  const [buttonWait, setButtonWait] = useState(false);
 
   function onAddCommentButtonClick() {
-    alert('No futuro isso vai adicionar o comentário :)');
-
-    setName('');
-    setContent('');
+    setButtonWait(true);
+    const body = {
+        author: name,
+        content: content
+    };
+    const request = axios.post(`http://localhost:4001/posts/${postId}/comments`, body);
+    request.then(r => {
+      setName('');
+      setContent('');
+      setButtonWait(false);
+    });
+    request.catch(() => {
+      setButtonWait(false);
+    });
   }
 
   return (
@@ -19,7 +31,7 @@ export default function AddComment({ postId }) {
       <Title>Add a comment</Title>
       <Input placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
       <CommentBox placeholder="Share your thoughts..." value={content} onChange={e => setContent(e.target.value)}></CommentBox>
-      <Button onClick={onAddCommentButtonClick}>Add Comment</Button>
+      <Button disabled={buttonWait} onClick={onAddCommentButtonClick}>Add Comment</Button>
     </>
   );
 }
