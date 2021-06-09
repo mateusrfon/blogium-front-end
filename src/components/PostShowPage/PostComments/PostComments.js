@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
 import Comment from './Comment';
 import AddComment from './AddComment';
@@ -8,17 +9,10 @@ export default function PostComments({ postId }) {
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
-    setComments([{
-      id: 1,
-      postId: postId,
-      author: 'João',
-      content: 'Muito bom esse post! Tá de parabéns'
-    }, {
-      id: 2,
-      postId: postId,
-      author: 'Maria',
-      content: 'Como faz pra dar palmas?'
-    }])
+    const request = axios.get(`http://localhost:4001/posts/${postId}/comments`)
+    request.then(r => {
+      setComments(r.data)
+    });
   }, [postId]);
   
   return (
