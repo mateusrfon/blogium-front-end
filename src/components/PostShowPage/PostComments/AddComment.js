@@ -4,10 +4,11 @@ import axios from 'axios';
 
 import Button from '../../Button';
 
-export default function AddComment({ postId }) {
+export default function AddComment({ postId, refreshKit }) {
   const [name, setName] = useState('');
   const [content, setContent] = useState('');
   const [buttonWait, setButtonWait] = useState(false);
+  const { refresh, setRefresh } = refreshKit;
 
   function onAddCommentButtonClick() {
     setButtonWait(true);
@@ -20,6 +21,7 @@ export default function AddComment({ postId }) {
       setName('');
       setContent('');
       setButtonWait(false);
+      setRefresh(!refresh);
     });
     request.catch(() => {
       setButtonWait(false);

@@ -7,13 +7,14 @@ import AddComment from './AddComment';
 
 export default function PostComments({ postId }) {
   const [comments, setComments] = useState([]);
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     const request = axios.get(`http://localhost:4001/posts/${postId}/comments`)
     request.then(r => {
       setComments(r.data)
     });
-  }, [postId]);
+  }, [postId, refresh]);
   
   return (
     <Container>
@@ -23,7 +24,7 @@ export default function PostComments({ postId }) {
          ? comments.map(c => <Comment comment={c} key={c.id} />)
          : "No comments yet. Be the first to comment!"
       }
-      <AddComment postId={postId} />
+      <AddComment postId={postId} refreshKit={{ refresh, setRefresh }}/>
     </Container>
   );
 }
