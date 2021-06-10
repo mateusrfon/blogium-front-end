@@ -26,8 +26,9 @@ export default function PostShowPage() {
   }
 
   function onDeleteButtonClick() {
-    alert('No futuro, ao clicar neste botão o post vai ser excluído de verdade :)');
-    history.push('/');
+    const request = axios.delete(`http://localhost:4001/posts/${postId}`);
+    request.then(() => history.push('/'));
+    request.catch(() => alert('algo deu errado'));
   }
 
   if (!post) return <Spinner />;

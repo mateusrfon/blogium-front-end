@@ -36,7 +36,7 @@ export default function PostEditPage() {
     const request = axios.put(`http://localhost:4001/posts/${postId}`, body);
     request.then(r => {
       setSaveButtonDisable(false);
-      history.push('');
+      history.push(`/posts/${post.id}`);
     });
     request.catch(() => {
       alert('algo deu errado');
